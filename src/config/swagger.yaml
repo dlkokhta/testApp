@@ -1,0 +1,74 @@
+openapi: 3.0.0
+info:
+  title: Blog App API
+  description: Blog API
+  version: 0.1.9
+
+servers:
+  - url: http://localhost:3000
+    description: local server
+  - url: collaboration-project-api-production.up.railway.app
+    description: production server
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+paths:
+  /api/register:
+    post:
+      summary: Create new user
+      tags:
+        - Registration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: The email of the user
+                password:
+                  type: string
+                  description: The password of the user
+                repeatPassword:
+                  type: string
+                  description: The repeated password of the user
+      responses:
+        "200":
+          description: User successfully added to the database
+        "400":
+          description: Bad request, username is required
+        "500":
+          description: Internal server error
+
+  /api/login:
+    post:
+      summary: User login
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: The username of the user
+                password:
+                  type: string
+                  description: The password of the user
+      responses:
+        "422":
+          description: User successfully logged in
+        "401":
+          description: Unauthorized, invalid credentials
+        "500":
+          description: Internal server error
